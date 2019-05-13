@@ -5,7 +5,6 @@
  */
 package sample;
 
-import com.sun.xml.internal.bind.v2.TODO;
 import javafx.geometry.Pos;
 import javafx.scene.Group;
 import javafx.scene.Scene;
@@ -30,7 +29,8 @@ public class Controller {
     HBox radioButtons;
 
     Group mainView;
-    ComputerMenuGameView cmgv;
+    ComputerMenuView cmgv;
+    HumanMenuView hmv;
 
     Button startButton;
     Spinner<Integer> stonesNumber;
@@ -52,7 +52,8 @@ public class Controller {
 
         /*create scene's elements*/
         startButton = new Button("Начать игру");
-        cmgv = new ComputerMenuGameView();
+        cmgv = new ComputerMenuView();
+        hmv = new HumanMenuView();
         stonesNumber = new Spinner<>(10, 100, 20);
         stonesNumber.setEditable(true);
         Text gameName = new Text("Stones Game");
@@ -68,24 +69,25 @@ public class Controller {
         withHumanRadioButton.setToggleGroup(modeRadioButtonGroup);
         radioButtons.getChildren().add(withHumanRadioButton);
 
+        /*add elements to main layout*/
         verticalLayout.getChildren().add(gameName);
         verticalLayout.getChildren().add(radioButtons);
         verticalLayout.getChildren().add(mainView);
         verticalLayout.getChildren().add(stonesNumber);
         verticalLayout.getChildren().add(startButton);
 
-        //cmgv.setVisible(false);
         withComputerRadioButton.setOnAction((event) -> {
             computerRadioButtonSelect();
         });
         
 
         withHumanRadioButton.setOnAction((event) -> {
-            //mainScene.setRoot(radioButtons);
             humanRadioButtonSelect();
-
         });
 
+        startButton.setOnAction(event -> {
+            startButtonPushed();
+        });
         TODO: /*добавить событие для проверки значения в spinner*/
 
         mainScene = new Scene(verticalLayout);
@@ -96,17 +98,17 @@ public class Controller {
     }
 
     private void humanRadioButtonSelect(){
-        //cmgv.setVisible(false);
+        mainView.getChildren().setAll(hmv);
         System.out.println("Human");
     }
 
     private void computerRadioButtonSelect(){
-        //verticalLayout.getChildren().remove(startButton);
-        //cmgv.setVisible(true);
         mainView.getChildren().setAll(cmgv);
-        //verticalLayout.getChildren().add(cmgv);
-        //verticalLayout.getChildren().add(startButton);
-        //mainScene.setRoot(verticalLayout);
         System.out.println("Comp");
+    }
+
+    private void startButtonPushed(){
+
+        System.out.println("start pushed");
     }
 }
