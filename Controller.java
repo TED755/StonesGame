@@ -26,7 +26,8 @@ import javafx.stage.Stage;
 public class Controller {
     Scene mainScene;
     VBox verticalLayout;
-    HBox radioButtons;
+    HBox chooseGameMode;
+    HBox chooseVictoryOption;
 
     Group mainView;
     ComputerMenuView cmgv;
@@ -35,9 +36,11 @@ public class Controller {
     Button startButton;
     Spinner<Integer> stonesNumber;
 
+    COMPHUMAN gm;
+    COMPHUMAN ft;
+
     public void start(Stage primaryStage){
         primaryStage.setTitle("Камешки");
-
         mainView = new Group();
 
         /*create vertical layout*/
@@ -46,9 +49,12 @@ public class Controller {
         verticalLayout.setSpacing(30);
 
         /*create horizontal layout for radio buttons*/
-        radioButtons = new HBox();
-        radioButtons.setAlignment(Pos.CENTER);
-        radioButtons.setSpacing(20);
+        chooseGameMode = new HBox();
+        chooseGameMode.setAlignment(Pos.CENTER);
+        chooseGameMode.setSpacing(20);
+        chooseVictoryOption = new HBox();
+        chooseVictoryOption.setAlignment(Pos.CENTER);
+        chooseVictoryOption.setSpacing(20);
 
         /*create scene's elements*/
         startButton = new Button("Начать игру");
@@ -59,19 +65,28 @@ public class Controller {
         Text gameName = new Text("Stones Game");
         gameName.setFont(Font.font("Tahoma", FontWeight.EXTRA_BOLD, 30));
 
-
-        /*create radio buttons*/
+        /*create mode radio buttons*/
         ToggleGroup modeRadioButtonGroup = new ToggleGroup();
         RadioButton withComputerRadioButton = new RadioButton("Играть с компьютером");/*with computer*/
         withComputerRadioButton.setToggleGroup(modeRadioButtonGroup);
-        radioButtons.getChildren().add(withComputerRadioButton);
+        chooseGameMode.getChildren().add(withComputerRadioButton);
         RadioButton withHumanRadioButton = new RadioButton("Играть с человеком");/*with human*/
         withHumanRadioButton.setToggleGroup(modeRadioButtonGroup);
-        radioButtons.getChildren().add(withHumanRadioButton);
+        chooseGameMode.getChildren().add(withHumanRadioButton);
+
+        /*create victory option radio buttons*/
+        ToggleGroup victoryOptionRadioButtonGroup = new ToggleGroup();
+        RadioButton takeLastRadioButton = new RadioButton("Забирает последний камень");
+        takeLastRadioButton.setToggleGroup(victoryOptionRadioButtonGroup);
+        chooseVictoryOption.getChildren().add(takeLastRadioButton);
+        RadioButton leaveLastRadioButton = new RadioButton("Оставляет последний камень");
+        leaveLastRadioButton.setToggleGroup(victoryOptionRadioButtonGroup);
+        chooseVictoryOption.getChildren().add(leaveLastRadioButton);
 
         /*add elements to main layout*/
         verticalLayout.getChildren().add(gameName);
-        verticalLayout.getChildren().add(radioButtons);
+        verticalLayout.getChildren().add(chooseGameMode);
+        verticalLayout.getChildren().add(chooseVictoryOption);
         verticalLayout.getChildren().add(mainView);
         verticalLayout.getChildren().add(stonesNumber);
         verticalLayout.getChildren().add(startButton);
@@ -85,25 +100,37 @@ public class Controller {
             humanRadioButtonSelect();
         });
 
+        takeLastRadioButton.setOnAction(event -> {
+
+        });
+
+        leaveLastRadioButton.setOnAction(event -> {
+            //ft =
+        });
+
         startButton.setOnAction(event -> {
             startButtonPushed();
         });
         TODO: /*добавить событие для проверки значения в spinner*/
 
         mainScene = new Scene(verticalLayout);
-        
+        //mainScene.set
 
         primaryStage.setScene(mainScene);
+        primaryStage.setMinHeight(500);
+        primaryStage.setMinWidth(500);
         primaryStage.show();
     }
 
     private void humanRadioButtonSelect(){
         mainView.getChildren().setAll(hmv);
+        gm = COMPHUMAN.HUMAN;
         System.out.println("Human");
     }
 
     private void computerRadioButtonSelect(){
         mainView.getChildren().setAll(cmgv);
+        gm = COMPHUMAN.COMPUTER;
         System.out.println("Comp");
     }
 

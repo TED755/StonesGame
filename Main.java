@@ -33,10 +33,10 @@ public class Main extends Application {
             }
         });
         
-        StackPane radioButtons = new StackPane();
-        radioButtons.getChildren().add(btn);
+        StackPane chooseGameMode = new StackPane();
+        chooseGameMode.getChildren().add(btn);
         
-        Scene scene = new Scene(radioButtons, 300, 250);
+        Scene scene = new Scene(chooseGameMode, 300, 250);
         
         primaryStage.setTitle("Hello World!");
         primaryStage.setScene(scene);
