@@ -12,6 +12,8 @@ import javafx.scene.control.Button;
 import javafx.scene.control.RadioButton;
 import javafx.scene.control.Spinner;
 import javafx.scene.control.ToggleGroup;
+import javafx.scene.layout.Border;
+import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Font;
@@ -28,6 +30,7 @@ public class Controller {
     VBox verticalLayout;
     HBox chooseGameMode;
     HBox chooseVictoryOption;
+    BorderPane bp;
 
     Group mainView;
     ComputerMenuView cmgv;
@@ -37,11 +40,15 @@ public class Controller {
     Spinner<Integer> stonesNumber;
 
     COMPHUMAN gm;
-    COMPHUMAN ft;
 
     public void start(Stage primaryStage){
         primaryStage.setTitle("Камешки");
         mainView = new Group();
+
+        /*create menu*/
+        MyMenu myMenu = new MyMenu();
+        bp = new BorderPane();
+        bp.setTop(myMenu);
 
         /*create vertical layout*/
         verticalLayout = new VBox();
@@ -84,6 +91,7 @@ public class Controller {
         chooseVictoryOption.getChildren().add(leaveLastRadioButton);
 
         /*add elements to main layout*/
+        verticalLayout.getChildren().add(bp);
         verticalLayout.getChildren().add(gameName);
         verticalLayout.getChildren().add(chooseGameMode);
         verticalLayout.getChildren().add(chooseVictoryOption);
@@ -105,15 +113,15 @@ public class Controller {
         });
 
         leaveLastRadioButton.setOnAction(event -> {
-            //ft =
+
         });
 
         startButton.setOnAction(event -> {
             startButtonPushed();
         });
         TODO: /*добавить событие для проверки значения в spinner*/
-
-        mainScene = new Scene(verticalLayout);
+        //bp.setCenter(verticalLayout);
+        mainScene = new Scene(verticalLayout, 500, 500);
         //mainScene.set
 
         primaryStage.setScene(mainScene);
@@ -135,6 +143,7 @@ public class Controller {
     }
 
     private void startButtonPushed(){
+        //Game game = new Game(gm, );
 
         System.out.println("start pushed");
     }

@@ -9,7 +9,6 @@ import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
 import javafx.scene.text.Text;
 
-
 public class HumanMenuView extends Group {
     private GridPane grid;
     private TextField namePlayer1;
@@ -32,8 +31,8 @@ public class HumanMenuView extends Group {
         Text player2 = new Text("Второй игрок:");
         player2.setFont(font);
         grid.add(player2, 0, 1);
-        namePlayer1 = new TextField("Игрок 2");
-        grid.add(namePlayer1, 1, 1);
+        namePlayer2 = new TextField("Игрок 2");
+        grid.add(namePlayer2, 1, 1);
     }
 
     private void createPane(){
