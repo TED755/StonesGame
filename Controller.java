@@ -12,14 +12,12 @@ import javafx.scene.control.Button;
 import javafx.scene.control.RadioButton;
 import javafx.scene.control.Spinner;
 import javafx.scene.control.ToggleGroup;
-import javafx.scene.layout.Border;
-import javafx.scene.layout.BorderPane;
-import javafx.scene.layout.HBox;
-import javafx.scene.layout.VBox;
+import javafx.scene.layout.*;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
+
 
 /**
  *
@@ -30,7 +28,7 @@ public class Controller {
     VBox verticalLayout;
     HBox chooseGameMode;
     HBox chooseVictoryOption;
-    BorderPane bp;
+    //BorderPane bp;
 
     Group mainView;
     ComputerMenuView cmgv;
@@ -47,13 +45,26 @@ public class Controller {
 
         /*create menu*/
         MyMenu myMenu = new MyMenu();
-        bp = new BorderPane();
-        bp.setTop(myMenu);
+        BorderPane bp = new BorderPane();
+
+        //Image img = new Image("/main_menu_background.jpg");
+        //ImageView mv = new ImageView(img);
+        //bp.getChildren().addAll(mv);
+
+//        bp.setBackground(new Background(new BackgroundImage(new Image("images/main_menu_background.jpg", 0, 400, true, true),
+//                BackgroundRepeat.NO_REPEAT,
+//                BackgroundRepeat.NO_REPEAT,
+//                BackgroundPosition.CENTER,
+//                BackgroundSize.DEFAULT)));
+
+        mainScene = new Scene(bp, 500, 500);
+
 
         /*create vertical layout*/
         verticalLayout = new VBox();
         verticalLayout.setAlignment(Pos.CENTER);
         verticalLayout.setSpacing(30);
+        //verticalLayout.getChildren().addAll(mv);
 
         /*create horizontal layout for radio buttons*/
         chooseGameMode = new HBox();
@@ -76,6 +87,8 @@ public class Controller {
         ToggleGroup modeRadioButtonGroup = new ToggleGroup();
         RadioButton withComputerRadioButton = new RadioButton("Играть с компьютером");/*with computer*/
         withComputerRadioButton.setToggleGroup(modeRadioButtonGroup);
+        withComputerRadioButton.setSelected(true);
+        computerRadioButtonSelect();
         chooseGameMode.getChildren().add(withComputerRadioButton);
         RadioButton withHumanRadioButton = new RadioButton("Играть с человеком");/*with human*/
         withHumanRadioButton.setToggleGroup(modeRadioButtonGroup);
@@ -91,7 +104,6 @@ public class Controller {
         chooseVictoryOption.getChildren().add(leaveLastRadioButton);
 
         /*add elements to main layout*/
-        verticalLayout.getChildren().add(bp);
         verticalLayout.getChildren().add(gameName);
         verticalLayout.getChildren().add(chooseGameMode);
         verticalLayout.getChildren().add(chooseVictoryOption);
@@ -102,7 +114,7 @@ public class Controller {
         withComputerRadioButton.setOnAction((event) -> {
             computerRadioButtonSelect();
         });
-        
+
 
         withHumanRadioButton.setOnAction((event) -> {
             humanRadioButtonSelect();
@@ -119,10 +131,11 @@ public class Controller {
         startButton.setOnAction(event -> {
             startButtonPushed();
         });
-        TODO: /*добавить событие для проверки значения в spinner*/
-        //bp.setCenter(verticalLayout);
-        mainScene = new Scene(verticalLayout, 500, 500);
-        //mainScene.set
+        TODO: /*добавить событие для проверки значения в spinner
+                добавить диалоговое окно, вызываемое при нажатие настройки*/
+
+        bp.setTop(myMenu);
+        bp.setCenter(verticalLayout);
 
         primaryStage.setScene(mainScene);
         primaryStage.setMinHeight(500);
