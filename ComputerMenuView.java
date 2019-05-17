@@ -74,6 +74,7 @@ public class ComputerMenuView extends Group{
         ToggleGroup radButtonGroup = new ToggleGroup();
         RadioButton rb1 = new RadioButton("Человек");
         rb1.setToggleGroup(radButtonGroup);
+        rb1.setSelected(true);
         RadioButton rb2 = new RadioButton("Компьютер");
         rb2.setToggleGroup(radButtonGroup);
         rb.getChildren().add(rb1);

@@ -15,6 +15,8 @@ public class Game {
     private int stones_number;
     private int removed_stones;
 
+    public Game(){}
+
     public Game(COMPHUMAN _game_mode, WINOPTION _win_option, COMPHUMAN _first_turn, String names, int _stones_number){
         this.game_mode = _game_mode;
         this.win_option = _win_option;

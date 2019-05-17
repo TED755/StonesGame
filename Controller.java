@@ -5,17 +5,11 @@
  */
 package sample;
 
-import javafx.geometry.Pos;
 import javafx.scene.Group;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
-import javafx.scene.control.RadioButton;
 import javafx.scene.control.Spinner;
-import javafx.scene.control.ToggleGroup;
 import javafx.scene.layout.*;
-import javafx.scene.text.Font;
-import javafx.scene.text.FontWeight;
-import javafx.scene.text.Text;
 import javafx.stage.Stage;
 
 
@@ -29,7 +23,7 @@ public class Controller {
     HBox chooseGameMode;
     HBox chooseVictoryOption;
     //BorderPane bp;
-
+    Game game;
     Group mainView;
     ComputerMenuView cmgv;
     HumanMenuView hmv;
@@ -42,9 +36,17 @@ public class Controller {
     public void start(Stage primaryStage){
         primaryStage.setTitle("Камешки");
         mainView = new Group();
-
+        game = new Game();
         /*create menu*/
         MyMenu myMenu = new MyMenu();
+        myMenu.getSettingsItem().setOnAction(event -> {
+            GameEditDialog gameEditDialog = new GameEditDialog(game, "Настройки игры");
+            if(gameEditDialog.getDialog().showAndWait().isPresent())
+                System.out.println("Alles gut");
+            //OrganizationEditDialog orgEditDialog = new OrganizationEditDialog(org, "Edit organization");
+            //if(orgEditDialog.getDialog().showAndWait().isPresent())
+            //viewOrg.dataChanged();
+        });
         BorderPane bp = new BorderPane();
 
         //Image img = new Image("/main_menu_background.jpg");
@@ -60,82 +62,82 @@ public class Controller {
         mainScene = new Scene(bp, 500, 500);
 
 
-        /*create vertical layout*/
-        verticalLayout = new VBox();
-        verticalLayout.setAlignment(Pos.CENTER);
-        verticalLayout.setSpacing(30);
-        //verticalLayout.getChildren().addAll(mv);
-
-        /*create horizontal layout for radio buttons*/
-        chooseGameMode = new HBox();
-        chooseGameMode.setAlignment(Pos.CENTER);
-        chooseGameMode.setSpacing(20);
-        chooseVictoryOption = new HBox();
-        chooseVictoryOption.setAlignment(Pos.CENTER);
-        chooseVictoryOption.setSpacing(20);
-
-        /*create scene's elements*/
-        startButton = new Button("Начать игру");
-        cmgv = new ComputerMenuView();
-        hmv = new HumanMenuView();
-        stonesNumber = new Spinner<>(10, 100, 20);
-        stonesNumber.setEditable(true);
-        Text gameName = new Text("Stones Game");
-        gameName.setFont(Font.font("Tahoma", FontWeight.EXTRA_BOLD, 30));
-
-        /*create mode radio buttons*/
-        ToggleGroup modeRadioButtonGroup = new ToggleGroup();
-        RadioButton withComputerRadioButton = new RadioButton("Играть с компьютером");/*with computer*/
-        withComputerRadioButton.setToggleGroup(modeRadioButtonGroup);
-        withComputerRadioButton.setSelected(true);
-        computerRadioButtonSelect();
-        chooseGameMode.getChildren().add(withComputerRadioButton);
-        RadioButton withHumanRadioButton = new RadioButton("Играть с человеком");/*with human*/
-        withHumanRadioButton.setToggleGroup(modeRadioButtonGroup);
-        chooseGameMode.getChildren().add(withHumanRadioButton);
-
-        /*create victory option radio buttons*/
-        ToggleGroup victoryOptionRadioButtonGroup = new ToggleGroup();
-        RadioButton takeLastRadioButton = new RadioButton("Забирает последний камень");
-        takeLastRadioButton.setToggleGroup(victoryOptionRadioButtonGroup);
-        chooseVictoryOption.getChildren().add(takeLastRadioButton);
-        RadioButton leaveLastRadioButton = new RadioButton("Оставляет последний камень");
-        leaveLastRadioButton.setToggleGroup(victoryOptionRadioButtonGroup);
-        chooseVictoryOption.getChildren().add(leaveLastRadioButton);
-
-        /*add elements to main layout*/
-        verticalLayout.getChildren().add(gameName);
-        verticalLayout.getChildren().add(chooseGameMode);
-        verticalLayout.getChildren().add(chooseVictoryOption);
-        verticalLayout.getChildren().add(mainView);
-        verticalLayout.getChildren().add(stonesNumber);
-        verticalLayout.getChildren().add(startButton);
-
-        withComputerRadioButton.setOnAction((event) -> {
-            computerRadioButtonSelect();
-        });
-
-
-        withHumanRadioButton.setOnAction((event) -> {
-            humanRadioButtonSelect();
-        });
-
-        takeLastRadioButton.setOnAction(event -> {
-
-        });
-
-        leaveLastRadioButton.setOnAction(event -> {
-
-        });
-
-        startButton.setOnAction(event -> {
-            startButtonPushed();
-        });
+//        /*create vertical layout*/
+//        verticalLayout = new VBox();
+//        verticalLayout.setAlignment(Pos.CENTER);
+//        verticalLayout.setSpacing(30);
+//        //verticalLayout.getChildren().addAll(mv);
+//
+//        /*create horizontal layout for radio buttons*/
+//        chooseGameMode = new HBox();
+//        chooseGameMode.setAlignment(Pos.CENTER);
+//        chooseGameMode.setSpacing(20);
+//        chooseVictoryOption = new HBox();
+//        chooseVictoryOption.setAlignment(Pos.CENTER);
+//        chooseVictoryOption.setSpacing(20);
+//
+//        /*create scene's elements*/
+//        startButton = new Button("Начать игру");
+//        cmgv = new ComputerMenuView();
+//        hmv = new HumanMenuView();
+//        stonesNumber = new Spinner<>(10, 100, 20);
+//        stonesNumber.setEditable(true);
+//        Text gameName = new Text("Stones Game");
+//        gameName.setFont(Font.font("Tahoma", FontWeight.EXTRA_BOLD, 30));
+//
+//        /*create mode radio buttons*/
+//        ToggleGroup modeRadioButtonGroup = new ToggleGroup();
+//        RadioButton withComputerRadioButton = new RadioButton("Играть с компьютером");/*with computer*/
+//        withComputerRadioButton.setToggleGroup(modeRadioButtonGroup);
+//        withComputerRadioButton.setSelected(true);
+//        computerRadioButtonSelect();
+//        chooseGameMode.getChildren().add(withComputerRadioButton);
+//        RadioButton withHumanRadioButton = new RadioButton("Играть с человеком");/*with human*/
+//        withHumanRadioButton.setToggleGroup(modeRadioButtonGroup);
+//        chooseGameMode.getChildren().add(withHumanRadioButton);
+//
+//        /*create victory option radio buttons*/
+//        ToggleGroup victoryOptionRadioButtonGroup = new ToggleGroup();
+//        RadioButton takeLastRadioButton = new RadioButton("Забирает последний камень");
+//        takeLastRadioButton.setToggleGroup(victoryOptionRadioButtonGroup);
+//        chooseVictoryOption.getChildren().add(takeLastRadioButton);
+//        RadioButton leaveLastRadioButton = new RadioButton("Оставляет последний камень");
+//        leaveLastRadioButton.setToggleGroup(victoryOptionRadioButtonGroup);
+//        chooseVictoryOption.getChildren().add(leaveLastRadioButton);
+//
+//        /*add elements to main layout*/
+//        verticalLayout.getChildren().add(gameName);
+//        verticalLayout.getChildren().add(chooseGameMode);
+//        verticalLayout.getChildren().add(chooseVictoryOption);
+//        verticalLayout.getChildren().add(mainView);
+//        verticalLayout.getChildren().add(stonesNumber);
+//        verticalLayout.getChildren().add(startButton);
+//
+//        withComputerRadioButton.setOnAction((event) -> {
+//            computerRadioButtonSelect();
+//        });
+//
+//
+//        withHumanRadioButton.setOnAction((event) -> {
+//            humanRadioButtonSelect();
+//        });
+//
+//        takeLastRadioButton.setOnAction(event -> {
+//
+//        });
+//
+//        leaveLastRadioButton.setOnAction(event -> {
+//
+//        });
+//
+//        startButton.setOnAction(event -> {
+//            startButtonPushed();
+//        });
         TODO: /*добавить событие для проверки значения в spinner
                 добавить диалоговое окно, вызываемое при нажатие настройки*/
 
         bp.setTop(myMenu);
-        bp.setCenter(verticalLayout);
+//        bp.setCenter(verticalLayout);
 
         primaryStage.setScene(mainScene);
         primaryStage.setMinHeight(500);
