@@ -21,29 +21,28 @@ public class GameEditDialog {
 
     private Spinner<Integer> stonesNumber;
 
-    private COMPHUMAN gm;
-
     private Dialog<Game> dialog;
 
     public GameEditDialog(Game game, String title){
         this.game = game;
         dialog = new Dialog<>();
         dialog.setTitle(title);
-        dialog.setHeaderText("Настройки игры");
+        //dialog.setHeaderText("Настройка игры");
 
         createLayouts();
         createViews();
         createRadioButtons();
         createButtons();
-
         createSpinner();
         dialog.getDialogPane().setContent(verticalLayout);
+
+        dialog.setResizable(true);
     }
 
     private void createLayouts(){
         verticalLayout = new VBox();
         verticalLayout.setAlignment(Pos.CENTER);
-        verticalLayout.setSpacing(30);
+        verticalLayout.setSpacing(20);
 
         chooseGameMode = new HBox();
         chooseGameMode.setAlignment(Pos.CENTER);
@@ -56,8 +55,9 @@ public class GameEditDialog {
 
     private void createViews(){
         mainView = new Group();
-        cmgv = new ComputerMenuView();
-        hmv = new HumanMenuView();
+        cmgv = new ComputerMenuView(game);
+        hmv = new HumanMenuView(game);
+        mainView.getChildren().setAll(cmgv);
         verticalLayout.getChildren().add(mainView);
     }
     private void createButtons() {
@@ -87,12 +87,19 @@ public class GameEditDialog {
         ToggleGroup modeRadioButtonGroup = new ToggleGroup();
         RadioButton withComputerRadioButton = new RadioButton("Играть с компьютером");/*with computer*/
         withComputerRadioButton.setToggleGroup(modeRadioButtonGroup);
-        withComputerRadioButton.setSelected(true);
-        computerRadioButtonSelect();
+
         chooseGameMode.getChildren().add(withComputerRadioButton);
         RadioButton withHumanRadioButton = new RadioButton("Играть с человеком");/*with human*/
         withHumanRadioButton.setToggleGroup(modeRadioButtonGroup);
         chooseGameMode.getChildren().add(withHumanRadioButton);
+        if(game.getGame_mode() == COMPHUMAN.COMPUTER){
+            computerRadioButtonSelect();
+            withComputerRadioButton.setSelected(true);
+        }
+        else {
+            humanRadioButtonSelect();
+            withHumanRadioButton.setSelected(true);
+        }
 
         /*create victory option radio buttons*/
         VBox vBox = new VBox(10);
@@ -102,12 +109,16 @@ public class GameEditDialog {
         ToggleGroup victoryOptionRadioButtonGroup = new ToggleGroup();
         RadioButton takeLastRadioButton = new RadioButton("Забирает последний камень");
         takeLastRadioButton.setToggleGroup(victoryOptionRadioButtonGroup);
-        takeLastRadioButton.setSelected(true);
+        //takeLastRadioButton.setSelected(true);
         chooseVictoryOption.getChildren().add(takeLastRadioButton);
         RadioButton leaveLastRadioButton = new RadioButton("Оставляет последний камень");
         leaveLastRadioButton.setToggleGroup(victoryOptionRadioButtonGroup);
         chooseVictoryOption.getChildren().add(leaveLastRadioButton);
         vBox.getChildren().addAll(text, chooseVictoryOption);
+        if(game.getWin_option() == WINOPTION.TAKE){
+            takeLastRadioButton.setSelected(true);
+        }
+        else leaveLastRadioButton.setSelected(true);
 
         /*create actions*/
         withComputerRadioButton.setOnAction((event) -> {
@@ -150,14 +161,25 @@ public class GameEditDialog {
 
     private void humanRadioButtonSelect(){
         mainView.getChildren().setAll(hmv);
-        gm = COMPHUMAN.HUMAN;
+        game.setGame_mode(COMPHUMAN.HUMAN);
+        game.setPlayer2_name(hmv.getTextFieldPlayer2Value());
+        //hmv.dataChanged();
+        //gm = COMPHUMAN.HUMAN;
         System.out.println("Human");
     }
 
     private void computerRadioButtonSelect(){
         mainView.getChildren().setAll(cmgv);
-        gm = COMPHUMAN.COMPUTER;
+        game.setGame_mode(COMPHUMAN.COMPUTER);
         System.out.println("Comp");
+    }
+
+    private void takeLastRadioButtonSelect(){
+
+    }
+
+    private void leaveLastRadioButtonSelect(){
+
     }
 
     public Dialog<Game> getDialog(){

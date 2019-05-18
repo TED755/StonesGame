@@ -10,12 +10,14 @@ import javafx.scene.text.FontWeight;
 import javafx.scene.text.Text;
 
 public class HumanMenuView extends Group {
+    private Game game;
     private GridPane grid;
     private TextField namePlayer1;
     private TextField namePlayer2;
     private Font font;
 
-    public HumanMenuView(){
+    public HumanMenuView(Game _game){
+        game = _game;
         createPane();
         createTextFields();
         this.getChildren().add(grid);
@@ -25,13 +27,13 @@ public class HumanMenuView extends Group {
         Text player1 = new Text("Первый игрок:");
         player1.setFont(font);
         grid.add(player1, 0, 0);
-        namePlayer1 = new TextField("Игрок 1");
+        namePlayer1 = new TextField(game.getPlayer1_name());
         grid.add(namePlayer1, 1, 0);
 
         Text player2 = new Text("Второй игрок:");
         player2.setFont(font);
         grid.add(player2, 0, 1);
-        namePlayer2 = new TextField("Игрок 2");
+        namePlayer2 = new TextField(game.getPlayer2_name().equals("Компьютер") ? "Второй игрок" : game.getPlayer2_name());
         grid.add(namePlayer2, 1, 1);
     }
 
@@ -43,5 +45,13 @@ public class HumanMenuView extends Group {
         grid.setPadding(new Insets(25, 25, 25, 25));
 
         font = Font.font("Tahoma", FontWeight.NORMAL, 20);
+    }
+    public void dataChanged(){
+        namePlayer1.setText(game.getPlayer1_name());
+        namePlayer2.setText(game.getPlayer2_name());
+    }
+
+    public String getTextFieldPlayer2Value(){
+        return namePlayer2.getText();
     }
 }

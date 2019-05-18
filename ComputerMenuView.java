@@ -25,17 +25,16 @@ import javafx.scene.text.Text;
  * @author gekat
  */
 public class ComputerMenuView extends Group{
-    
+    private Game game;
     private GridPane grid;
     private Text playerName;
     private TextField playerNameField;
     private Font font;
-    //private VBox chooseFirstTurn;
     private VBox verticalLayout;
-    private COMPHUMAN ch;
     
     
-    public ComputerMenuView(){
+    public ComputerMenuView(Game _game){
+        game = _game;
         verticalLayout = new VBox(20);
         verticalLayout.setAlignment(Pos.CENTER);
         createPane();
@@ -43,7 +42,6 @@ public class ComputerMenuView extends Group{
         verticalLayout.getChildren().add(grid);
         createRadioButtons();
 
-        //verticalLayout.getChildren().add(chooseFirstTurn);
         this.getChildren().add(verticalLayout);
     }
     
@@ -51,7 +49,7 @@ public class ComputerMenuView extends Group{
         playerName = new Text("Игрок:");
         playerName.setFont(font);
         grid.add(playerName, 0, 0);
-        playerNameField = new TextField("Игрок");
+        playerNameField = new TextField(game.getPlayer1_name());
         grid.add(playerNameField, 1, 0);
     }
     public void createPane(){
@@ -74,27 +72,31 @@ public class ComputerMenuView extends Group{
         ToggleGroup radButtonGroup = new ToggleGroup();
         RadioButton rb1 = new RadioButton("Человек");
         rb1.setToggleGroup(radButtonGroup);
-        rb1.setSelected(true);
+
         RadioButton rb2 = new RadioButton("Компьютер");
         rb2.setToggleGroup(radButtonGroup);
         rb.getChildren().add(rb1);
         rb.getChildren().add(rb2);
+        if(game.getTurn() == COMPHUMAN.HUMAN){
+            rb1.setSelected(true);
+        }
+        else rb2.setSelected(true);
 
         verticalLayout.getChildren().add(text);
         verticalLayout.getChildren().add(rb);
 
         rb1.setOnAction(event -> {
-            ch  = COMPHUMAN.HUMAN;
+            game.setTurn(COMPHUMAN.HUMAN);
             System.out.println("set human");
         });
 
         rb2.setOnAction(event -> {
-            ch  = COMPHUMAN.COMPUTER;
+            game.setTurn(COMPHUMAN.COMPUTER);
             System.out.println("set comp");
         });
     }
 
-    public COMPHUMAN getCOMPHUMAN(){
-        return ch;
+    public void dataChanged(){
+
     }
 }

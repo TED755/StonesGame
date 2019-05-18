@@ -1,7 +1,6 @@
 package sample;
 
 enum COMPHUMAN {HUMAN, COMPUTER}
-//enum FIRSTSECOND {FIRST, SECOND}
 enum WINOPTION {TAKE, LEAVE}
 
 public class Game {
@@ -15,7 +14,21 @@ public class Game {
     private int stones_number;
     private int removed_stones;
 
-    public Game(){}
+    public Game(){
+        this.game_mode = COMPHUMAN.HUMAN;
+        this.turn = COMPHUMAN.HUMAN;
+        this.win_option = WINOPTION.TAKE;
+
+        if(game_mode == COMPHUMAN.COMPUTER){
+            player1_name = "Игрок";
+            player2_name = "Компьютер";
+        }
+        else {
+            player1_name = "Первый игрок";
+            player2_name = "Второй игрок";
+        }
+        stones_number = 20;
+    }
 
     public Game(COMPHUMAN _game_mode, WINOPTION _win_option, COMPHUMAN _first_turn, String names, int _stones_number){
         this.game_mode = _game_mode;
@@ -84,4 +97,47 @@ public class Game {
         }*/
     }
 
+    public int getStonesNumber(){
+        return stones_number;
+    }
+
+    public COMPHUMAN getGame_mode(){
+        return game_mode;
+    }
+
+    public COMPHUMAN getTurn(){
+        return turn;
+    }
+
+    public WINOPTION getWin_option(){
+        return win_option;
+    }
+
+    public String getPlayer1_name(){
+        return  player1_name;
+    }
+
+    public String getPlayer2_name(){
+        return player2_name;
+    }
+
+    public int getRemoved_stones(){
+        return removed_stones;
+    }
+
+    public void setTurn(COMPHUMAN value){
+        turn = value;
+    }
+
+    public void setGame_mode(COMPHUMAN value){
+        game_mode = value;
+    }
+
+    public void setPlayer1_name(String newName){
+        player1_name = newName;
+    }
+
+    public void setPlayer2_name(String newName){
+        player2_name = newName;
+    }
 }
