@@ -8,6 +8,10 @@ public class Game {
     private COMPHUMAN turn;
     private WINOPTION win_option;
 
+    private Player player1;
+    private Player player2;
+    private Computer computer;
+
     private String player1_name;
     private String player2_name;
 
