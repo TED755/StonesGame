@@ -131,11 +131,11 @@ public class GameEditDialog {
         });
 
         takeLastRadioButton.setOnAction(event -> {
-
+            takeLastRadioButtonSelect();
         });
 
         leaveLastRadioButton.setOnAction(event -> {
-
+            leaveLastRadioButtonSelect();
         });
 
         verticalLayout.getChildren().addAll(chooseGameMode, vBox);
@@ -156,29 +156,33 @@ public class GameEditDialog {
         return true;
     }
     private void handleOk(){
+        game.setStones_number(stonesNumber.getValue());
+        if(game.getGame_mode() == COMPHUMAN.COMPUTER)
+            game.setTurn(cmgv.getTurn());
 
     }
 
     private void humanRadioButtonSelect(){
         mainView.getChildren().setAll(hmv);
         game.setGame_mode(COMPHUMAN.HUMAN);
-        game.setPlayer2_name(hmv.getTextFieldPlayer2Value());
-        //hmv.dataChanged();
-        //gm = COMPHUMAN.HUMAN;
         System.out.println("Human");
     }
 
     private void computerRadioButtonSelect(){
         mainView.getChildren().setAll(cmgv);
         game.setGame_mode(COMPHUMAN.COMPUTER);
+        //game.setNicks("Компьютер", );
         System.out.println("Comp");
     }
 
     private void takeLastRadioButtonSelect(){
-
+        game.setWin_option(WINOPTION.TAKE);
+        System.out.println("set win option take");
     }
 
     private void leaveLastRadioButtonSelect(){
+        game.setWin_option(WINOPTION.LEAVE);
+        System.out.println("set win option leave");
 
     }
 

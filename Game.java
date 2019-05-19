@@ -15,18 +15,25 @@ public class Game {
     private int removed_stones;
 
     public Game(){
-        this.game_mode = COMPHUMAN.HUMAN;
+        this.game_mode = COMPHUMAN.COMPUTER;
         this.turn = COMPHUMAN.HUMAN;
         this.win_option = WINOPTION.TAKE;
 
         if(game_mode == COMPHUMAN.COMPUTER){
-            player1_name = "Игрок";
-            player2_name = "Компьютер";
+            if(turn == COMPHUMAN.COMPUTER){
+                player1_name = "Компьютер";
+                player2_name = "Игрок";
+            }
+            else {
+                player2_name = "Компьютер";
+                player1_name = "Игрок";
+            }
         }
         else {
             player1_name = "Первый игрок";
             player2_name = "Второй игрок";
         }
+
         stones_number = 20;
     }
 
@@ -139,5 +146,35 @@ public class Game {
 
     public void setPlayer2_name(String newName){
         player2_name = newName;
+    }
+
+    public void setWin_option(WINOPTION win_option){ this.win_option = win_option; }
+
+    public void setStones_number(int stones_number){ this.stones_number = stones_number; }
+
+    public void setNicks(String first, String second){
+        player1_name = first;
+        player2_name = second;
+        /*if(turn == COMPHUMAN.COMPUTER){
+            player1_name = f;
+            player2_name = names;
+        }
+        else {
+            player2_name = "Компьютер";
+            player1_name = names;
+        }*/
+    }
+
+    @Override
+    public String toString(){
+        String str = "Игра\n";
+
+        str += "• " + (game_mode == COMPHUMAN.HUMAN ? "С человеком" : "С компьютером") + "\n";
+        if(game_mode == COMPHUMAN.COMPUTER)
+            str += "• Первый ход делает " + (turn == COMPHUMAN.HUMAN ? "человек" : "компьютер") + "\n";
+        str += "• Побеждает игрок " + (win_option == WINOPTION.TAKE ? "забравший последний камень" :
+                "оставивший последний камень") + "\n";
+        str += "• Количество камней в куче " + stones_number + "\n";
+        return str;
     }
 }

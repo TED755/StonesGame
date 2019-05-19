@@ -27,8 +27,9 @@ import javafx.scene.text.Text;
 public class ComputerMenuView extends Group{
     private Game game;
     private GridPane grid;
-    private Text playerName;
-    private TextField playerNameField;
+    private COMPHUMAN turn;
+    //private Text playerName;
+    //private TextField playerNameField;
     private Font font;
     private VBox verticalLayout;
     
@@ -46,11 +47,11 @@ public class ComputerMenuView extends Group{
     }
     
     public void createTextFields(){
-        playerName = new Text("Игрок:");
+        /*playerName = new Text("Игрок:");
         playerName.setFont(font);
         grid.add(playerName, 0, 0);
         playerNameField = new TextField(game.getPlayer1_name());
-        grid.add(playerNameField, 1, 0);
+        grid.add(playerNameField, 1, 0);*/
     }
     public void createPane(){
         grid = new GridPane();  
@@ -86,14 +87,18 @@ public class ComputerMenuView extends Group{
         verticalLayout.getChildren().add(rb);
 
         rb1.setOnAction(event -> {
-            game.setTurn(COMPHUMAN.HUMAN);
+            turn = COMPHUMAN.HUMAN;
             System.out.println("set human");
         });
 
         rb2.setOnAction(event -> {
-            game.setTurn(COMPHUMAN.COMPUTER);
+            turn = COMPHUMAN.COMPUTER;
             System.out.println("set comp");
         });
+    }
+
+    public COMPHUMAN getTurn(){
+        return turn;
     }
 
     public void dataChanged(){

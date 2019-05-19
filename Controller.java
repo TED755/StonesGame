@@ -5,6 +5,7 @@
  */
 package sample;
 
+import javafx.geometry.Pos;
 import javafx.scene.Group;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
@@ -21,25 +22,40 @@ public class Controller {
     Scene mainScene;
     //BorderPane bp;
     Game game;
-    Group mainView;
+    VBox mainView;
+    MainMenuView view;
 
     Button startButton;
 
     public void start(Stage primaryStage){
         primaryStage.setTitle("Камешки");
-        mainView = new Group();
         game = new Game();
+        BorderPane bp = new BorderPane();
+        mainView = new VBox(10);
+        mainView.setAlignment(Pos.CENTER);
+        view = new MainMenuView(game);
+
+
+        startButton = new Button("Начать игру");
+
         /*create menu*/
         MyMenu myMenu = new MyMenu();
         myMenu.getSettingsItem().setOnAction(event -> {
             GameEditDialog gameEditDialog = new GameEditDialog(game, "Настройка игры");
-            if(gameEditDialog.getDialog().showAndWait().isPresent())
+            if(gameEditDialog.getDialog().showAndWait().isPresent()){
+                view.dataChanged();
                 System.out.println("Alles gut");
+            }
             //OrganizationEditDialog orgEditDialog = new OrganizationEditDialog(org, "Edit organization");
             //if(orgEditDialog.getDialog().showAndWait().isPresent())
             //viewOrg.dataChanged();
         });
-        BorderPane bp = new BorderPane();
+
+
+        startButton.setOnAction(event -> {
+            startButtonPushed();
+        });
+
 
         //Image img = new Image("/main_menu_background.jpg");
         //ImageView mv = new ImageView(img);
@@ -51,13 +67,17 @@ public class Controller {
 //                BackgroundPosition.CENTER,
 //                BackgroundSize.DEFAULT)));
 
+        mainView.getChildren().addAll(view, startButton);
+        bp.setTop(myMenu);
+        bp.setCenter(mainView);
         mainScene = new Scene(bp, 500, 500);
 
         TODO: /*добавить событие для проверки значения в spinner
                 добавить в меню правили и о программе*/
 
-        bp.setTop(myMenu);
-//        bp.setCenter(verticalLayout);
+
+        //bp.set(startButton);
+        //bp.setCenter(view);
 
         primaryStage.setScene(mainScene);
         primaryStage.setMinHeight(500);
