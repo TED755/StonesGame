@@ -13,8 +13,8 @@ import java.util.Random;
  */
 public class Computer {
     private String name;
-    public Computer(String _name){
-        name = _name;
+    public Computer(String name){
+        this.name = name;
     }
     
     public void setName(String newName){

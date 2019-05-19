@@ -1,5 +1,6 @@
 package sample;
 
+import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Cursor;
 import javafx.scene.Group;
@@ -19,15 +20,22 @@ public class MainMenuView extends Group {
     private Label player1;
     private Label player2;
     private Label info;
+
     private GridPane pane;
+    private GridPane one_p;
+    private GridPane two_p;
+
     private Font font;
 
-    public MainMenuView(Game _game){
-        this.game = _game;
+    public MainMenuView(Game game){
+        this.game = game;
         mainLayout = new VBox(20);
         font = Font.font("Tahoma", FontWeight.NORMAL, 20);
         mainLayout.setAlignment(Pos.BOTTOM_LEFT);
         pane = new GridPane();
+        pane.setHgap(10);
+        pane.setVgap(10);
+        pane.setPadding(new Insets(25, 25, 25, 25));
 
         createLabels();
         createActions();
@@ -35,19 +43,23 @@ public class MainMenuView extends Group {
     }
 
     public void createLabels(){
-        Text player1Text = new Text("Первый игрок ");
+        Text player1Text = new Text("Первый игрок:");
         player1Text.setFont(font);
-        player1 = new Label(game.getPlayer1_name());
+        player1 = new Label(game.getPlayer1().getName());
         player1.setFont(font);
         pane.add(player1Text, 0, 0);
         pane.add(player1, 1, 0);
 
-        Text player2Text = new Text("Второй игрок");
+
+        Text player2Text = new Text("Второй игрок:");
         player2Text.setFont(font);
-        player2 = new Label(game.getPlayer2_name());
+        player2 = new Label(game.getPlayer2().getName());
         player2.setFont(font);
-        pane.add(player2Text, 0, 1);
-        pane.add(player2, 1, 1);
+        if(game.getGame_mode() == COMPHUMAN.HUMAN){
+            pane.add(player2Text, 0, 1);
+            pane.add(player2, 1, 1);
+        }
+
 
         info = new Label(game.toString());
         info.setFont(font);
@@ -75,25 +87,6 @@ public class MainMenuView extends Group {
             info.setScaleX(1);
             info.setScaleY(1);
         });
-        actionsChanged();
-        /*addEventHandler(MouseEvent.MOUSE_PRESSED, (MouseEvent e)->{
-            if(!(e.getButton() == MouseButton.SECONDARY)){
-                GameEditDialog gameEditDialog = new GameEditDialog(game, "Настройка");
-                if (gameEditDialog.getDialog().showAndWait().isPresent())
-                    System.out.println("Work");
-            }
-        });*/
-
-
-    }
-    public void dataChanged(){
-        player1.setText(game.getPlayer1_name());
-        if(game.getGame_mode() == COMPHUMAN.HUMAN)
-            player2.setText(game.getPlayer2_name());
-        info.setText(game.toString());
-    }
-
-    public void actionsChanged(){
         if(game.getGame_mode() == COMPHUMAN.COMPUTER){
             if(game.getTurn() == COMPHUMAN.COMPUTER){
                 player2.setCursor(Cursor.HAND);
@@ -174,5 +167,28 @@ public class MainMenuView extends Group {
                 }
             });
         }
+        /*addEventHandler(MouseEvent.MOUSE_PRESSED, (MouseEvent e)->{
+            if(!(e.getButton() == MouseButton.SECONDARY)){
+                GameEditDialog gameEditDialog = new GameEditDialog(game, "Настройка");
+                if (gameEditDialog.getDialog().showAndWait().isPresent())
+                    System.out.println("Work");
+            }
+        });*/
+
+
+    }
+    public void dataChanged(){
+        player1.setText(game.getPlayer1().getName());
+        if(game.getGame_mode() == COMPHUMAN.HUMAN) {
+            player2.setText((game.getPlayer2().getName()));
+        }
+        info.setText(game.toString());
+    }
+
+    public void actionsChanged(){
+        if(game.getGame_mode() == COMPHUMAN.HUMAN){
+
+        }
+
     }
 }

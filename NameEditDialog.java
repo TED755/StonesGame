@@ -15,12 +15,16 @@ public class NameEditDialog {
     private GridPane pane;
     private Dialog<Game> dialog;
 
-    public NameEditDialog(Game _game, String title){
-        game = _game;
+    public NameEditDialog(Game game, String title){
+        this.game = game;
         font = Font.font("Tahoma", FontWeight.NORMAL, 20);
         dialog = new Dialog<>();
+        dialog.setTitle(title);
 
-        namePlayer2 = new TextField(game.getPlayer2_name());
+        //namePlayer1 = new
+        if(game.getGame_mode() == COMPHUMAN.HUMAN) {
+            namePlayer2 = new TextField(game.getPlayer2().getName());
+        }
         pane = new GridPane();
         pane.setAlignment(Pos.CENTER);
         pane.setHgap(10);
@@ -29,7 +33,7 @@ public class NameEditDialog {
         if(game.getGame_mode() == COMPHUMAN.COMPUTER){
             Text text = new Text("Новый ник:");
             text.setFont(font);
-            namePlayer1 = new TextField(game.getPlayer1_name());
+            namePlayer1 = new TextField(game.getPlayer1().getName());
 
             pane.add(text, 0, 0);
             pane.add(namePlayer1, 1, 0);
@@ -37,14 +41,14 @@ public class NameEditDialog {
         else{
             Text text1 = new Text("Новый ник первого игрока:");
             text1.setFont(font);
-            namePlayer1 = new TextField(game.getPlayer1_name());
+            namePlayer1 = new TextField(game.getPlayer1().getName());
 
             pane.add(text1, 0, 0);
             pane.add(namePlayer1, 1, 0);
 
             Text text2 = new Text("Новый ник второго игрока:");
             text2.setFont(font);
-            namePlayer2 = new TextField(game.getPlayer1_name());
+            namePlayer2 = new TextField(game.getPlayer2().getName());
 
             pane.add(text2, 0, 1);
             pane.add(namePlayer2, 1, 1);
@@ -69,9 +73,9 @@ public class NameEditDialog {
     }
 
     private void handleOk() {
-        game.setPlayer1_name(namePlayer1.getText());
+        game.getPlayer1().setName(namePlayer1.getText());
         if(game.getGame_mode() == COMPHUMAN.HUMAN)
-            game.setPlayer2_name(namePlayer2.getText());
+            game.getPlayer2().setName(namePlayer2.getText());
     }
 
     private void createButtons() {

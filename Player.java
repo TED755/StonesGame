@@ -12,8 +12,8 @@ package sample;
 public class Player {
     private String name;
     
-    public Player(String _name){
-        name = _name;
+    public Player(String name){
+        this.name = name;
     }
     public void setName(String newName){
         name = newName;
