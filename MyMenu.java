@@ -14,6 +14,9 @@ import java.security.Key;
 public class MyMenu extends MenuBar{
 
     private MenuItem settings;
+    private MenuItem newGame;
+    private MenuItem exitMenu;
+    private MenuItem continueGame;
     public MyMenu(){
         this.getMenus().addAll(createGameMenu(), createFileMenu());
     }
@@ -29,9 +32,10 @@ public class MyMenu extends MenuBar{
 
     private Menu createGameMenu(){
         Menu menuGame = new Menu("Игра");
-        MenuItem newGame = new MenuItem("Новая игра");
+        newGame = new MenuItem("Новая игра");
+        continueGame = new MenuItem("Продолжить игру");
         settings = new MenuItem("Настройки");
-        MenuItem exitMenu = new MenuItem("Выйти в меню");
+        exitMenu = new MenuItem("Выйти в меню");
         MenuItem exit = new MenuItem("Выйти из игры");
 
         exit.setOnAction((ActionEvent t) -> {
@@ -41,11 +45,14 @@ public class MyMenu extends MenuBar{
 
         settings.setAccelerator(KeyCombination.keyCombination("Ctrl+Alt+S"));
 
-        menuGame.getItems().addAll(newGame, exitMenu, new SeparatorMenuItem(), settings, new SeparatorMenuItem(), exit);
+        menuGame.getItems().addAll(newGame, continueGame, new SeparatorMenuItem(), settings, new SeparatorMenuItem(),
+                exitMenu, exit);
         return menuGame;
     }
 
     public MenuItem getSettingsItem(){
         return settings;
     }
+
+    public MenuItem getExitMenuItem() { return exitMenu; }
 }

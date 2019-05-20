@@ -6,11 +6,11 @@
 package sample;
 
 import javafx.geometry.Pos;
-import javafx.scene.Group;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
-import javafx.scene.control.Spinner;
+import javafx.scene.image.Image;
 import javafx.scene.layout.*;
+import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 
 
@@ -19,75 +19,103 @@ import javafx.stage.Stage;
  * @author gekat
  */
 public class Controller {
-    Scene mainScene;
-    //BorderPane bp;
-    Game game;
-    VBox mainView;
-    MainMenuView view;
+    private Scene mainScene;
+    private Scene gameScene;
+    private Game game;
+    private MyMenu myMenu;
+    private Stage primaryStage;
 
-    Button startButton;
+    private BorderPane bp1;
+    private BorderPane bp2;
 
-    public void start(Stage primaryStage){
+    public void start(Stage stage){
+        primaryStage = stage;
         primaryStage.setTitle("Камешки");
         game = new Game();
-        BorderPane bp = new BorderPane();
-        mainView = new VBox(10);
+        bp1 = new BorderPane();
+        Image image = new Image("sample/images/main_menu_background1.jpg");
+        bp1.setBackground(new Background(new BackgroundFill(Color.GREEN, null, null)));
+        bp1.setBackground(new Background(new BackgroundImage(image, BackgroundRepeat.NO_REPEAT,
+                BackgroundRepeat.NO_REPEAT,
+                BackgroundPosition.CENTER,
+                BackgroundSize.DEFAULT)));
+        VBox mainView = new VBox(10);
         mainView.setAlignment(Pos.CENTER);
-        view = new MainMenuView(game);
+        MainMenuView view = new MainMenuView(game);
 
-
-        startButton = new Button("Начать игру");
+        Button startButton = new Button("Начать игру");
+        startButton.setBackground(new Background(new BackgroundFill(Color.GREEN, null, null)));
 
         /*create menu*/
-        MyMenu myMenu = new MyMenu();
+        myMenu = new MyMenu();
         myMenu.getSettingsItem().setOnAction(event -> {
             GameEditDialog gameEditDialog = new GameEditDialog(game, "Настройка игры");
             if(gameEditDialog.getDialog().showAndWait().isPresent()){
                 view.dataChanged();
                 System.out.println("Alles gut");
             }
-            //OrganizationEditDialog orgEditDialog = new OrganizationEditDialog(org, "Edit organization");
-            //if(orgEditDialog.getDialog().showAndWait().isPresent())
-            //viewOrg.dataChanged();
         });
 
+        myMenu.getExitMenuItem().setDisable(true);
+        /*myMenu.getExitMenuItem().setOnAction(event -> {
+            menu();
+        });*/
 
         startButton.setOnAction(event -> {
             startButtonPushed();
         });
 
-
-        //Image img = new Image("/main_menu_background.jpg");
-        //ImageView mv = new ImageView(img);
-        //bp.getChildren().addAll(mv);
-
-//        bp.setBackground(new Background(new BackgroundImage(new Image("images/main_menu_background.jpg", 0, 400, true, true),
-//                BackgroundRepeat.NO_REPEAT,
-//                BackgroundRepeat.NO_REPEAT,
-//                BackgroundPosition.CENTER,
-//                BackgroundSize.DEFAULT)));
-
         mainView.getChildren().addAll(view, startButton);
-        bp.setTop(myMenu);
-        bp.setCenter(mainView);
-        mainScene = new Scene(bp, 500, 500);
+        bp1.setTop(myMenu);
+        bp1.setCenter(mainView);
+        mainScene = new Scene(bp1, 500, 500);
 
         TODO: /*добавить событие для проверки значения в spinner
-                добавить в меню правили и о программе*/
-
-
-        //bp.set(startButton);
-        //bp.setCenter(view);
+                добавить в меню правили и о программе
+                add read from file*/
 
         primaryStage.setScene(mainScene);
         primaryStage.setMinHeight(500);
         primaryStage.setMinWidth(500);
+        primaryStage.setResizable(false);
         primaryStage.show();
+        createGameScene();
     }
 
     private void startButtonPushed(){
+        game();
         //Game game = new Game(gm, );
 
         System.out.println("start pushed");
+    }
+
+    private void game(){
+
+        primaryStage.setScene(gameScene);
+    }
+
+    private void menu(){
+        primaryStage.setScene(mainScene);
+
+    }
+
+    private void createGameScene(){
+        MyMenu myMenu1 = new MyMenu();
+        myMenu1.getSettingsItem().setDisable(true);
+        /*myMenu.getSettingsItem().setOnAction(event -> {
+            GameEditDialog gameEditDialog = new GameEditDialog(game, "Настройка игры");
+            if(gameEditDialog.getDialog().showAndWait().isPresent()){
+                view.dataChanged();
+                System.out.println("Alles gut");
+            }
+        });*/
+
+        myMenu1.getExitMenuItem().setOnAction(event -> {
+            menu();
+        });
+        bp2 = new BorderPane();
+        bp2.setTop(myMenu1);
+
+        gameScene = new Scene(bp2, 500, 500);
     }
 }
