@@ -21,6 +21,7 @@ import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
 
 
+import java.awt.image.AreaAveragingScaleFilter;
 import java.util.ArrayList;
 import java.util.Random;
 
@@ -28,6 +29,7 @@ public class GameView extends Group {
     private Game game;
     private Random random = new Random();
     private ArrayList<Circle> deleteList;
+    private ArrayList<Circle> circles;
     private Point2D delta;
 
     private Group position;
@@ -54,6 +56,7 @@ public class GameView extends Group {
         //position = new Group;
         //mainLayout.setVgap(20);
         deleteList = new ArrayList<>();
+        circles = new ArrayList<>();
         //mainLayout = new BorderPane();
         //mainLayout = new VBox();
         mainLayout.setAlignment(Pos.CENTER);
@@ -77,12 +80,11 @@ public class GameView extends Group {
         //mainLayout.getChildren().add(move);
         if(deleteList.isEmpty())
             move.setDisable(true);
-        move.setOnAction((ActionEvent e) ->{
-        });
+        /*move.setOnAction((ActionEvent e) ->{
+            movePushed();
+        });*/
 
-        move.setOnAction((ActionEvent e)->{
 
-        });
 
         this.getChildren().addAll(mainLayout);
     }
@@ -234,24 +236,40 @@ public class GameView extends Group {
         return circle;
     }
 
-    private void movePushed(){
-        //if()
-    }
+    //private void movePushed(){
+        //game.setRemovedStones(deleteList.size());
+    //}
 
     private void createGameField(){
         Group root = new Group();
 
         //root.prefHeight(450);
         for(int i = 0; i < game.getStonesNumber(); i++){
-            root.getChildren().add(createCircle());
+            Circle tmp = createCircle();
+            circles.add(tmp);
+            root.getChildren().add(tmp);
         }
         //mainLayout.getChildren().add(root);
         mainLayout.add(root, 0, 1);
     }
 
+    public void computerDeleteFromField(){
+        for(int i = 0; i < game.getRemoved_stones(); i++) {
+            Random rnd = new Random(System.currentTimeMillis());
+            int number = rnd.nextInt(game.getStonesNumber() - i);
+            deleteList.add(circles.get(number));
+            circles.remove(number);
+        }
+        for(int i = 0; i < deleteList.size(); i++){
+            deleteList.get(i).setVisible(false);
+        }
+        deleteList = new ArrayList<>();
+    }
+
     public void deleteStonesFromField(){
         for(int i = 0; i < deleteList.size(); i++){
             deleteList.get(i).setVisible(false);
+            circles.remove(deleteList.get(i));
         }
         deleteList = new ArrayList<>();
     }

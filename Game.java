@@ -53,10 +53,9 @@ public class Game {
         this.stones_number = stones_number;
     }
 
-    public void recountStones(int value){
-        if(value <= 0)
-            throw new NumberFormatException();
-        stones_number -= value;
+    public void recountStones(){
+        stones_number -= removed_stones;
+        removed_stones = 0;
     }
 
     public void changeTurn(){
@@ -81,10 +80,6 @@ public class Game {
         if(value <= 0 || value > 4)
             throw new NumberFormatException("Выбрано некорректное количество камней");
         removed_stones = value;
-    }
-
-    public void setZeroRemovedStones(){
-        removed_stones = 0;
     }
 
     public int getStonesNumber(){
@@ -126,6 +121,16 @@ public class Game {
     public void setWin_option(WINOPTION win_option){ this.win_option = win_option; }
 
     public void setStones_number(int stones_number){ this.stones_number = stones_number; }
+
+    public String whoWin(){
+        String str = "Победил ";
+
+        if(win_option == WINOPTION.TAKE){
+            //if(turn == COMPHUMAN.HUMAN)
+        }
+
+        return str;
+    }
 
     @Override
     public String toString(){

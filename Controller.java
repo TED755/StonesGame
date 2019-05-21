@@ -5,6 +5,7 @@
  */
 package sample;
 
+import javafx.event.ActionEvent;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
@@ -100,15 +101,45 @@ public class Controller {
     private void humanGame(){}
 
     private void computerGame(){
-        //while(!game.isVictory()){
-            if(game.getTurn() == COMPHUMAN.COMPUTER)
-                if(game.getWin_option() == WINOPTION.LEAVE)
-                    game.setRemovedStones(game.getComputer().leaveLastStoneWinStrategy(game.getStonesNumber()));
-                else game.setRemovedStones(game.getComputer().takeLastStoneWinStrategy(game.getStonesNumber()));
-            if(game.getTurn() == COMPHUMAN.HUMAN){
-                //gameView.getDeleteListSize();
+        if(game.isVictory()){
+            System.out.println("end");
+            WinWindow w = new WinWindow(game);
+            if(w.getDialog().showAndWait().isPresent())
+                menu();
+            return;
+        }
+            Button button = gameView.getMoveButton();
+            if(game.getTurn() == COMPHUMAN.COMPUTER) {
+                computerTurn();
+                computerGame();
             }
+            else {
+                button.setOnAction((ActionEvent e) -> {
+                    game.setRemovedStones(gameView.getDeleteListSize());
+                    gameView.deleteStonesFromField();
+                    game.recountStones();
+                    game.changeTurn();
+                    gameView.dataChanged();
+                    computerGame();
+                });
+            }
+
+        //while(!game.isVictory()){
+
+                //gameView.getDeleteListSize();
+
         //}
+    }
+
+    private void computerTurn(){
+        if(game.getTurn() == COMPHUMAN.COMPUTER)
+            if(game.getWin_option() == WINOPTION.LEAVE)
+                game.setRemovedStones(game.getComputer().leaveLastStoneWinStrategy(game.getStonesNumber()));
+            else game.setRemovedStones(game.getComputer().takeLastStoneWinStrategy(game.getStonesNumber()));
+        gameView.computerDeleteFromField();
+        game.recountStones();
+        game.changeTurn();
+        gameView.dataChanged();
     }
 
     private void menu(){
