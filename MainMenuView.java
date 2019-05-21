@@ -8,6 +8,7 @@ import javafx.scene.control.Label;
 import javafx.scene.input.MouseButton;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.VBox;
+import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
 import javafx.scene.text.Text;
@@ -43,15 +44,20 @@ public class MainMenuView extends Group {
     public void createLabels(){
         Text player1Text = new Text("Первый игрок:");
         player1Text.setFont(font);
+        player1Text.setFill(Color.GOLD);
+
         player1 = new Label(game.getPlayer1().getName());
         player1.setFont(font);
+        player1.setStyle("-fx-text-fill: white");
         pane.add(player1Text, 0, 0);
         pane.add(player1, 1, 0);
 
         Text player2Text = new Text("Второй игрок:");
         player2Text.setFont(font);
+        player2Text.setFill(Color.GOLD);
         player2 = new Label(game.getPlayer2().getName());
         player2.setFont(font);
+        player2.setStyle("-fx-text-fill: white");
         pane.add(player2Text, 0, 1);
         pane.add(player2, 1, 1);
 
@@ -60,6 +66,7 @@ public class MainMenuView extends Group {
 
         info = new Label(game.toString());
         info.setFont(font);
+        info.setStyle("-fx-text-fill: #f79431");
 
         mainLayout.getChildren().addAll(pane, info);
     }

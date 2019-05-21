@@ -33,7 +33,7 @@ public class Controller {
         primaryStage.setTitle("Камешки");
         game = new Game();
         bp1 = new BorderPane();
-        Image image = new Image("sample/images/main_menu_background1.jpg");
+        Image image = new Image("sample/images/main_menu_background2.jpg");
         bp1.setBackground(new Background(new BackgroundFill(Color.GREEN, null, null)));
         bp1.setBackground(new Background(new BackgroundImage(image, BackgroundRepeat.NO_REPEAT,
                 BackgroundRepeat.NO_REPEAT,
@@ -75,8 +75,8 @@ public class Controller {
                 add read from file*/
 
         primaryStage.setScene(mainScene);
-        primaryStage.setMinHeight(500);
-        primaryStage.setMinWidth(500);
+        primaryStage.setHeight(500);
+        primaryStage.setWidth(500);
         primaryStage.setResizable(false);
         primaryStage.show();
         createGameScene();
@@ -113,8 +113,16 @@ public class Controller {
         myMenu1.getExitMenuItem().setOnAction(event -> {
             menu();
         });
+        GameView gameView = new GameView(game);
         bp2 = new BorderPane();
         bp2.setTop(myMenu1);
+        bp2.setCenter(gameView);
+        Image image = new Image("sample/images/main_menu_background2.jpg");
+        bp2.setBackground(new Background(new BackgroundFill(Color.GREEN, null, null)));
+        bp2.setBackground(new Background(new BackgroundImage(image, BackgroundRepeat.NO_REPEAT,
+                BackgroundRepeat.NO_REPEAT,
+                BackgroundPosition.CENTER,
+                BackgroundSize.DEFAULT)));
 
         gameScene = new Scene(bp2, 500, 500);
     }
