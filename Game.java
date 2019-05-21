@@ -78,9 +78,13 @@ public class Game {
     }
 
     public void setRemovedStones(int value){
-        if(value <= 0)
-            throw new NumberFormatException();
+        if(value <= 0 || value > 4)
+            throw new NumberFormatException("Выбрано некорректное количество камней");
         removed_stones = value;
+    }
+
+    public void setZeroRemovedStones(){
+        removed_stones = 0;
     }
 
     public int getStonesNumber(){

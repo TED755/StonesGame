@@ -146,7 +146,7 @@ public class GameEditDialog {
         vBox.setAlignment(Pos.CENTER);
         Text text = new Text("Количество камней");
         text.setFont(Font.font("Tahoma", FontWeight.NORMAL, 15));
-        stonesNumber = new Spinner<>(10, 100, 20);
+        stonesNumber = new Spinner<>(10, 100, game.getStonesNumber());
         stonesNumber.setEditable(true);
         vBox.getChildren().addAll(text, stonesNumber);
         verticalLayout.getChildren().add(vBox);

@@ -24,6 +24,7 @@ public class Controller {
     private Game game;
     private MyMenu myMenu;
     private Stage primaryStage;
+    private GameView gameView;
 
     private BorderPane bp1;
     private BorderPane bp2;
@@ -83,15 +84,31 @@ public class Controller {
     }
 
     private void startButtonPushed(){
+        gameView.dataChanged();
+        //System.out.println("Game info: " + game);
         game();
-        //Game game = new Game(gm, );
-
         System.out.println("start pushed");
     }
 
     private void game(){
-
         primaryStage.setScene(gameScene);
+        if(game.getGame_mode() == COMPHUMAN.HUMAN)
+            humanGame();
+        else computerGame();
+    }
+
+    private void humanGame(){}
+
+    private void computerGame(){
+        //while(!game.isVictory()){
+            if(game.getTurn() == COMPHUMAN.COMPUTER)
+                if(game.getWin_option() == WINOPTION.LEAVE)
+                    game.setRemovedStones(game.getComputer().leaveLastStoneWinStrategy(game.getStonesNumber()));
+                else game.setRemovedStones(game.getComputer().takeLastStoneWinStrategy(game.getStonesNumber()));
+            if(game.getTurn() == COMPHUMAN.HUMAN){
+                //gameView.getDeleteListSize();
+            }
+        //}
     }
 
     private void menu(){
@@ -113,7 +130,7 @@ public class Controller {
         myMenu1.getExitMenuItem().setOnAction(event -> {
             menu();
         });
-        GameView gameView = new GameView(game);
+        gameView = new GameView(game);
         bp2 = new BorderPane();
         bp2.setTop(myMenu1);
         bp2.setCenter(gameView);
@@ -126,4 +143,6 @@ public class Controller {
 
         gameScene = new Scene(bp2, 500, 500);
     }
+
+    private void saveSettings(){}
 }

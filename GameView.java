@@ -1,11 +1,13 @@
 package sample;
 
+import javafx.event.ActionEvent;
 import javafx.geometry.HPos;
 import javafx.geometry.Orientation;
 import javafx.geometry.Point2D;
 import javafx.geometry.Pos;
 import javafx.scene.Group;
 import javafx.scene.Node;
+import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.Separator;
 import javafx.scene.image.Image;
@@ -13,20 +15,27 @@ import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
+import javafx.scene.paint.ImagePattern;
 import javafx.scene.shape.Circle;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
 
+
+import java.util.ArrayList;
 import java.util.Random;
 
 public class GameView extends Group {
     private Game game;
     private Random random = new Random();
-
+    private ArrayList<Circle> deleteList;
     private Point2D delta;
-    private boolean isRotate;
+
+    private Group position;
 
     private GridPane mainLayout;
+    //private VBox mainLayout;
+    //private BorderPane mainLayout;
+
     private Font font;
 
     private Label leftTopLabel;
@@ -35,15 +44,23 @@ public class GameView extends Group {
     private Label rightTurnLabel;
     private Label stonesLabel;
 
+    private Button move;
+
     private HBox lowerLayout;
 
     public GameView(Game game){
         this.game = game;
         mainLayout = new GridPane();
-        mainLayout.setAlignment(Pos.TOP_CENTER);
-        mainLayout.setHgap(0);
-        mainLayout.setVgap(0);
-        mainLayout.setGridLinesVisible(true);
+        //position = new Group;
+        //mainLayout.setVgap(20);
+        deleteList = new ArrayList<>();
+        //mainLayout = new BorderPane();
+        //mainLayout = new VBox();
+        mainLayout.setAlignment(Pos.CENTER);
+
+        //mainLayout.setHgap(0);
+        //mainLayout.setVgap(0);
+        //mainLayout.setGridLinesVisible(true);
         /*mainLayout.setBackground(new Background(new BackgroundImage(new Image("sample/images/main_menu_background2.jpg"),
                 BackgroundRepeat.NO_REPEAT,
                 BackgroundRepeat.NO_REPEAT,
@@ -52,21 +69,43 @@ public class GameView extends Group {
 
         font = Font.font("Tahoma", FontWeight.BOLD, 20);
 
+        move = new Button("Сходить");
         createLabels();
         createGameField();
+        mainLayout.add(move, 0, 2);
+        //mainLayout.setBottom(move);
+        //mainLayout.getChildren().add(move);
+        if(deleteList.isEmpty())
+            move.setDisable(true);
+        move.setOnAction((ActionEvent e) ->{
+        });
+
+        move.setOnAction((ActionEvent e)->{
+
+        });
+
         this.getChildren().addAll(mainLayout);
+    }
+
+    public Button getMoveButton(){
+        return move;
     }
 
     private void createLabels(){
         HBox topLayout = new HBox(0);
-        Separator sep = new Separator();
+        Image image = new Image("sample/images/fon.jpg");
+        topLayout.setBackground(new Background(new BackgroundImage(image, BackgroundRepeat.NO_REPEAT,
+                BackgroundRepeat.NO_REPEAT,
+                BackgroundPosition.CENTER,
+                BackgroundSize.DEFAULT)));
+        /*Separator sep = new Separator();
         sep.setOrientation(Orientation.VERTICAL);
         Separator sep1 = new Separator();
         sep1.setOrientation(Orientation.VERTICAL);
         Separator sep2 = new Separator();
         sep2.setOrientation(Orientation.VERTICAL);
         Separator sep3 = new Separator();
-        sep3.setOrientation(Orientation.VERTICAL);
+        sep3.setOrientation(Orientation.VERTICAL);*/
 
         leftTopLabel = new Label(game.getPlayer1().getName());
         rightTopLabel = new Label();
@@ -82,16 +121,16 @@ public class GameView extends Group {
         leftTopLabel.setAlignment(Pos.CENTER);
         rightTopLabel.setStyle("-fx-text-fill: gold");
         rightTopLabel.setAlignment(Pos.CENTER);
-        Image image = new Image("sample/images/fon.jpg");
-        leftTopLabel.setBackground(new Background(new BackgroundImage(image, BackgroundRepeat.NO_REPEAT,
+
+        /*leftTopLabel.setBackground(new Background(new BackgroundImage(image, BackgroundRepeat.NO_REPEAT,
                 BackgroundRepeat.NO_REPEAT,
                 BackgroundPosition.CENTER,
-                BackgroundSize.DEFAULT)));
+                BackgroundSize.DEFAULT)));*/
         leftTopLabel.setPrefSize(175, 50);
-        rightTopLabel.setBackground(new Background(new BackgroundImage(image, BackgroundRepeat.NO_REPEAT,
+        /*rightTopLabel.setBackground(new Background(new BackgroundImage(image, BackgroundRepeat.NO_REPEAT,
                 BackgroundRepeat.NO_REPEAT,
                 BackgroundPosition.CENTER,
-                BackgroundSize.DEFAULT)));
+                BackgroundSize.DEFAULT)));*/
         rightTopLabel.setPrefSize(175, 50);
 
         leftTurnLabel = new Label();
@@ -104,13 +143,26 @@ public class GameView extends Group {
 
         rightTurnLabel = new Label();
         rightTurnLabel.setPrefSize(50, 50);
+        rightTurnLabel.setBackground(new Background(new BackgroundImage(new Image("sample/images/2.png"), BackgroundRepeat.NO_REPEAT,
+                BackgroundRepeat.NO_REPEAT,
+                BackgroundPosition.CENTER,
+                BackgroundSize.DEFAULT)));
+        leftTurnLabel.setBackground(new Background(new BackgroundImage(new Image("sample/images/3.png"), BackgroundRepeat.NO_REPEAT,
+                BackgroundRepeat.NO_REPEAT,
+                BackgroundPosition.CENTER,
+                BackgroundSize.DEFAULT)));
         if(game.getTurn() == COMPHUMAN.HUMAN) {
-            leftTurnLabel.setBackground(new Background(new BackgroundFill(Color.GREEN, null, null)));
-            rightTurnLabel.setBackground(new Background(new BackgroundFill(Color.RED, null, null)));
+            leftTurnLabel.setVisible(true);
+            //leftTurnLabel.setBackground(new Background(new BackgroundFill(Color.GREEN, null, null)));
+            rightTurnLabel.setVisible(false);
+            //rightTurnLabel.setBackground(new Background(new BackgroundFill(Color.RED, null, null)));
         }
         else {
-            leftTurnLabel.setBackground(new Background(new BackgroundFill(Color.RED, null, null)));
-            rightTurnLabel.setBackground(new Background(new BackgroundFill(Color.GREEN, null, null)));
+            leftTurnLabel.setVisible(false);
+            //leftTurnLabel.setBackground(new Background(new BackgroundFill(Color.GREEN, null, null)));
+            rightTurnLabel.setVisible(true);
+            //leftTurnLabel.setBackground(new Background(new BackgroundFill(Color.RED, null, null)));
+            //rightTurnLabel.setBackground(new Background(new BackgroundFill(Color.GREEN, null, null)));
         }
 
         stonesLabel = new Label();
@@ -119,97 +171,77 @@ public class GameView extends Group {
         stonesLabel.setPrefSize(50, 50);
         stonesLabel.setStyle("-fx-text-fill: gold");
         stonesLabel.setAlignment(Pos.CENTER);
-        stonesLabel.setBackground(new Background(new BackgroundImage(image, BackgroundRepeat.NO_REPEAT,
+        /*stonesLabel.setBackground(new Background(new BackgroundImage(image, BackgroundRepeat.NO_REPEAT,
                 BackgroundRepeat.NO_REPEAT,
                 BackgroundPosition.CENTER,
-                BackgroundSize.DEFAULT)));
+                BackgroundSize.DEFAULT)));*/
 
         topLayout.getChildren().addAll(leftTopLabel, leftTurnLabel, stonesLabel, rightTurnLabel, rightTopLabel);
 
-        mainLayout.add(topLayout, 0, 0);
-        //mainLayout.set
+        //topLayout.setLayoutY(0);
+
+        //mainLayout.add(topLayout, 0, 0);
+        //mainLayout.setTop(topLayout);
+        mainLayout.getChildren().add(topLayout);
     }
 
     private Circle createCircle(){
+        Image image = new Image("sample/images/1.png");
         Circle circle = new Circle(20);
-        circle.setFill(Color.GRAY);
         circle.setLayoutY(random.nextDouble() * 200);
         circle.setLayoutX(random.nextDouble() * 200);
         circle.setRotate(random.nextDouble() * 180);
+        circle.setFill(new ImagePattern(image));
         circle.setOnMousePressed((MouseEvent mouseEvent) -> {
             delta = new Point2D((mouseEvent.getSceneX() - circle.getLayoutX()),
                     (mouseEvent.getSceneY() - circle.getLayoutY()));
-                });
+            if (mouseEvent.getClickCount() == 2) {
+                circle.setScaleX(0.8);
+                circle.setScaleY(0.8);
+                deleteList.add(circle);
+                dataChanged();
+                //game.setRemovedStones(game.getRemoved_stones() + 1);
+            }
+            if(mouseEvent.getButton() == MouseButton.SECONDARY) {
+                circle.setScaleX(1);
+                circle.setScaleY(1);
+                deleteList.remove(circle);
+                dataChanged();
+                //try {
+                   // game.setRemovedStones(game.getRemoved_stones() - 1);
+                //}
+                //catch (NumberFormatException e){
+                    //e.getMessage();
+                //}
+            }
+        });
+
         circle.setOnMouseDragged((MouseEvent e)->{
             if(e.getSceneX() - delta.getX() < 470 && e.getSceneX() - delta.getX() > 0) {
                 circle.setLayoutX(e.getSceneX() - delta.getX());
                 System.err.println(circle.getLayoutX());
             }
             //circle.setLayoutX(e.getSceneX() - delta.getX());
-            if(e.getSceneY() - delta.getY() < 370 && e.getSceneY() - delta.getY() > 0) {
+            if(e.getSceneY() - delta.getY() < 305 && e.getSceneY() - delta.getY() > 0) {
                 circle.setLayoutY(e.getSceneY() - delta.getY());
                 //System.err.println(circle.getLayoutY());
             }
         });
 
+        //circle.setOnMousePressed();
+
         //addTranslateListener(circle);
         return circle;
     }
 
-    private void addTranslateListener(final Node node) {
-        node.setOnMousePressed((MouseEvent mouseEvent) -> {
-            delta = new Point2D((mouseEvent.getSceneX() - node.getLayoutX()),
-                    (mouseEvent.getSceneY() - node.getLayoutY()));
-            if (mouseEvent.getButton() == MouseButton.SECONDARY) {
-                isRotate = true;
-            }
-        });
-
-        node.setOnMouseReleased((MouseEvent mouseEvent) -> {
-            isRotate = false;
-        });
-
-        node.setOnMouseDragged((MouseEvent mouseEvent) -> {
-            /*if (isRotate) {
-                // подсчет нового угла основывается на подсчете угла между двумя векторами
-
-                double dx1 = mouseEvent.getSceneX() - node.getLayoutX();
-                double dy1 = mouseEvent.getSceneY() - node.getLayoutY();
-                double l = Math.sqrt(dx1 * dx1 + dy1 * dy1);
-                dx1 /= l; // нормализация
-                dy1 /= l; // вектора
-
-                double angle = Math.PI / 2; //  второй вектор
-                double dx2 = Math.sin(angle);      // единичный вектор,
-                double dy2 = Math.cos(angle);      // который повернутый на 90 градусов
-
-                double cosA = dx1 * dx2 + dy1 * dy2;
-                angle = Math.acos(cosA);
-
-                if (dy1 < 0) {
-                    angle = Math.PI - angle;
-                }
-                node.setRotate(angle / Math.PI * 180); // из радиан в градусы
-                */
-            //} else {
-
-            //if(mouseEvent.getSceneX() - delta.getX() < 400 && mouseEvent.getSceneX() - delta.getX() > 0 &&
-            //        mouseEvent.getSceneY() - delta.getY() < 400 && mouseEvent.getSceneY() - delta.getY() > 0) {
-                node.setLayoutX(mouseEvent.getSceneX() - delta.getX());
-                node.setLayoutY(mouseEvent.getSceneY() - delta.getY());
-            //}
-
-            //if()
-
-
-            System.err.println("X:" + (mouseEvent.getSceneX() - delta.getX()) +
-                    " Y: " + (mouseEvent.getSceneY() - delta.getY()));
-            //}
-        });
+    private void movePushed(){
+        //if()
     }
 
     private void createGameField(){
         Group root = new Group();
+
+        //root.prefHeight(450);
         for(int i = 0; i < game.getStonesNumber(); i++){
             root.getChildren().add(createCircle());
         }
@@ -217,16 +249,42 @@ public class GameView extends Group {
         mainLayout.add(root, 0, 1);
     }
 
-
+    public void deleteStonesFromField(){
+        for(int i = 0; i < deleteList.size(); i++){
+            deleteList.get(i).setVisible(false);
+        }
+        deleteList = new ArrayList<>();
+    }
 
     public void dataChanged(){
+        if(deleteList.isEmpty() || deleteList.size() > 4)
+            move.setDisable(true);
+        else move.setDisable(false);
         if(game.getTurn() == COMPHUMAN.HUMAN) {
+            leftTurnLabel.setVisible(true);
+            rightTurnLabel.setVisible(false);
+        }
+        else {
+            leftTurnLabel.setVisible(false);
+            rightTurnLabel.setVisible(true);
+        }
+        stonesLabel.setText(Integer.toString(game.getStonesNumber()));
+        leftTopLabel.setText(game.getPlayer1().getName());
+        if(game.getGame_mode() == COMPHUMAN.HUMAN)
+            rightTopLabel.setText(game.getPlayer2().getName());
+        /*if(game.getTurn() == COMPHUMAN.HUMAN) {
             leftTurnLabel.setBackground(new Background(new BackgroundFill(Color.GREEN, null, null)));
             rightTurnLabel.setBackground(new Background(new BackgroundFill(Color.RED, null, null)));
         }
         else {
             leftTurnLabel.setBackground(new Background(new BackgroundFill(Color.RED, null, null)));
             rightTurnLabel.setBackground(new Background(new BackgroundFill(Color.GREEN, null, null)));
-        }
+        }*/
     }
+
+    public int getDeleteListSize(){
+        return deleteList.size();
+    }
+
+
 }
