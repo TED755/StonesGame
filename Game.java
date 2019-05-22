@@ -63,16 +63,16 @@ public class Game {
     }
 
     public boolean isVictory(){
-        if(win_option == WINOPTION.TAKE){
+        //if(win_option == WINOPTION.TAKE){
             if(stones_number == 0) {
                 return true;
             }
-        }
-        if(win_option == WINOPTION.LEAVE){
-            if(stones_number == 1){
-                return true;
-            }
-        }
+        //}
+        //if(win_option == WINOPTION.LEAVE){
+            //if(stones_number == 1){
+                //return true;
+            //}
+        //}
         return false;
     }
 
@@ -124,12 +124,28 @@ public class Game {
 
     public String whoWin(){
         String str = "Победил ";
-
-        if(win_option == WINOPTION.TAKE){
-            //if(turn == COMPHUMAN.HUMAN)
+        if(game_mode == COMPHUMAN.COMPUTER) {
+            if (win_option == WINOPTION.TAKE) {
+                if(turn == COMPHUMAN.HUMAN){
+                    str += "Компьютер";
+                }
+                else str += player1.getName();
+            }
+            else{
+                if(turn == COMPHUMAN.HUMAN){
+                    str += player1.getName();
+                }
+                else str += "Компьютер";
+            }
+        }
+        else{
+            if(turn == COMPHUMAN.HUMAN){
+                str += player2.getName();
+            }
+            else str += player1.getName();
         }
 
-        return str;
+        return str + "!";
     }
 
     @Override

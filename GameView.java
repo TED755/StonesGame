@@ -24,6 +24,7 @@ import javafx.scene.text.FontWeight;
 import java.awt.image.AreaAveragingScaleFilter;
 import java.util.ArrayList;
 import java.util.Random;
+import java.util.concurrent.TimeUnit;
 
 public class GameView extends Group {
     private Game game;
@@ -155,16 +156,11 @@ public class GameView extends Group {
                 BackgroundSize.DEFAULT)));
         if(game.getTurn() == COMPHUMAN.HUMAN) {
             leftTurnLabel.setVisible(true);
-            //leftTurnLabel.setBackground(new Background(new BackgroundFill(Color.GREEN, null, null)));
             rightTurnLabel.setVisible(false);
-            //rightTurnLabel.setBackground(new Background(new BackgroundFill(Color.RED, null, null)));
         }
         else {
             leftTurnLabel.setVisible(false);
-            //leftTurnLabel.setBackground(new Background(new BackgroundFill(Color.GREEN, null, null)));
             rightTurnLabel.setVisible(true);
-            //leftTurnLabel.setBackground(new Background(new BackgroundFill(Color.RED, null, null)));
-            //rightTurnLabel.setBackground(new Background(new BackgroundFill(Color.GREEN, null, null)));
         }
 
         stonesLabel = new Label();
@@ -197,25 +193,33 @@ public class GameView extends Group {
         circle.setOnMousePressed((MouseEvent mouseEvent) -> {
             delta = new Point2D((mouseEvent.getSceneX() - circle.getLayoutX()),
                     (mouseEvent.getSceneY() - circle.getLayoutY()));
-            if (mouseEvent.getClickCount() == 2) {
-                circle.setScaleX(0.8);
-                circle.setScaleY(0.8);
-                deleteList.add(circle);
-                dataChanged();
-                //game.setRemovedStones(game.getRemoved_stones() + 1);
-            }
-            if(mouseEvent.getButton() == MouseButton.SECONDARY) {
-                circle.setScaleX(1);
-                circle.setScaleY(1);
-                deleteList.remove(circle);
-                dataChanged();
-                //try {
-                   // game.setRemovedStones(game.getRemoved_stones() - 1);
-                //}
-                //catch (NumberFormatException e){
+
+                if (mouseEvent.getClickCount() == 2) {
+                    if(!deleteList.contains(circle)) {
+                        circle.setScaleX(0.8);
+                        circle.setScaleY(0.8);
+                        deleteList.add(circle);
+                        dataChanged();
+                    }
+                    //game.setRemovedStones(game.getRemoved_stones() + 1);
+                }
+                if (mouseEvent.getButton() == MouseButton.SECONDARY) {
+                    if(deleteList.contains(circle)) {
+                        circle.setScaleX(1);
+                        circle.setScaleY(1);
+                        deleteList.remove(circle);
+                        dataChanged();
+                    }
+
+
+                    //try {
+                    // game.setRemovedStones(game.getRemoved_stones() - 1);
+                    //}
+                    //catch (NumberFormatException e){
                     //e.getMessage();
-                //}
-            }
+                    //}
+                }
+
         });
 
         circle.setOnMouseDragged((MouseEvent e)->{
@@ -253,12 +257,14 @@ public class GameView extends Group {
         mainLayout.add(root, 0, 1);
     }
 
-    public void computerDeleteFromField(){
+    public void computerDeleteFromField() {
+
         for(int i = 0; i < game.getRemoved_stones(); i++) {
             Random rnd = new Random(System.currentTimeMillis());
-            int number = rnd.nextInt(game.getStonesNumber() - i);
-            deleteList.add(circles.get(number));
-            circles.remove(number);
+            //int number = ;
+            //number = rnd.nextInt(game.getRemoved_stones() - i);
+            deleteList.add(circles.get(0));
+            circles.remove(0);
         }
         for(int i = 0; i < deleteList.size(); i++){
             deleteList.get(i).setVisible(false);

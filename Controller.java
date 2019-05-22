@@ -14,6 +14,10 @@ import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 
+import java.awt.event.ActionListener;
+import java.util.Timer;
+import java.util.TimerTask;
+
 
 /**
  *
@@ -85,7 +89,9 @@ public class Controller {
     }
 
     private void startButtonPushed(){
-        gameView.dataChanged();
+        gameView = new GameView(game);
+        bp2.setCenter(gameView);
+        //gameView.dataChanged();
         //System.out.println("Game info: " + game);
         game();
         System.out.println("start pushed");
@@ -102,7 +108,8 @@ public class Controller {
 
     private void computerGame(){
         if(game.isVictory()){
-            System.out.println("end");
+            System.out.println("Turn: " + game.getTurn());
+            System.out.println("Stones: " + game.getStonesNumber());
             WinWindow w = new WinWindow(game);
             if(w.getDialog().showAndWait().isPresent())
                 menu();
@@ -132,6 +139,7 @@ public class Controller {
     }
 
     private void computerTurn(){
+
         if(game.getTurn() == COMPHUMAN.COMPUTER)
             if(game.getWin_option() == WINOPTION.LEAVE)
                 game.setRemovedStones(game.getComputer().leaveLastStoneWinStrategy(game.getStonesNumber()));
@@ -161,10 +169,9 @@ public class Controller {
         myMenu1.getExitMenuItem().setOnAction(event -> {
             menu();
         });
-        gameView = new GameView(game);
+        //gameView = new GameView(game);
         bp2 = new BorderPane();
         bp2.setTop(myMenu1);
-        bp2.setCenter(gameView);
         Image image = new Image("sample/images/main_menu_background2.jpg");
         bp2.setBackground(new Background(new BackgroundFill(Color.GREEN, null, null)));
         bp2.setBackground(new Background(new BackgroundImage(image, BackgroundRepeat.NO_REPEAT,

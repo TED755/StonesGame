@@ -36,6 +36,7 @@ public class ComputerMenuView extends Group{
     
     public ComputerMenuView(Game _game){
         game = _game;
+        turn = game.getTurn();
         verticalLayout = new VBox(20);
         verticalLayout.setAlignment(Pos.CENTER);
         createPane();

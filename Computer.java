@@ -37,6 +37,8 @@ public class Computer {
     
     public int leaveLastStoneWinStrategy(int stone_number){
         Random rnd = new Random(System.currentTimeMillis());
+        if(stone_number == 1)
+            return 1;
         if(stone_number % 5 == 1)
             return 1 + rnd.nextInt(4);
         for(int i = 1; i < 5; i++)
