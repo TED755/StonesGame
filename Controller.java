@@ -104,7 +104,25 @@ public class Controller {
         else computerGame();
     }
 
-    private void humanGame(){}
+    private void humanGame(){
+        if(game.isVictory()){
+            System.out.println("Turn: " + game.getTurn());
+            System.out.println("Stones: " + game.getStonesNumber());
+            WinWindow w = new WinWindow(game);
+            if(w.getDialog().showAndWait().isPresent())
+                menu();
+            return;
+        }
+        Button button = gameView.getMoveButton();
+        button.setOnAction((ActionEvent e) -> {
+            game.setRemovedStones(gameView.getDeleteListSize());
+            gameView.deleteStonesFromField();
+            game.recountStones();
+            game.changeTurn();
+            gameView.dataChanged();
+            humanGame();
+        });
+    }
 
     private void computerGame(){
         if(game.isVictory()){
@@ -115,21 +133,21 @@ public class Controller {
                 menu();
             return;
         }
-            Button button = gameView.getMoveButton();
-            if(game.getTurn() == COMPHUMAN.COMPUTER) {
-                computerTurn();
+        Button button = gameView.getMoveButton();
+        if(game.getTurn() == COMPHUMAN.COMPUTER) {
+            computerTurn();
+            computerGame();
+        }
+        else {
+            button.setOnAction((ActionEvent e) -> {
+                game.setRemovedStones(gameView.getDeleteListSize());
+                gameView.deleteStonesFromField();
+                game.recountStones();
+                game.changeTurn();
+                gameView.dataChanged();
                 computerGame();
-            }
-            else {
-                button.setOnAction((ActionEvent e) -> {
-                    game.setRemovedStones(gameView.getDeleteListSize());
-                    gameView.deleteStonesFromField();
-                    game.recountStones();
-                    game.changeTurn();
-                    gameView.dataChanged();
-                    computerGame();
-                });
-            }
+            });
+        }
 
         //while(!game.isVictory()){
 
