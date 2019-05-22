@@ -15,6 +15,9 @@ import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 
 import java.awt.event.ActionListener;
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.util.Timer;
 import java.util.TimerTask;
 
@@ -27,6 +30,7 @@ public class Controller {
     private Scene mainScene;
     private Scene gameScene;
     private Game game;
+    private Game saveGame;
     private MyMenu myMenu;
     private Stage primaryStage;
     private GameView gameView;
@@ -89,11 +93,10 @@ public class Controller {
     }
 
     private void startButtonPushed(){
-        gameView = new GameView(game);
-        bp2.setCenter(gameView);
+        newGame();
         //gameView.dataChanged();
         //System.out.println("Game info: " + game);
-        game();
+        //game();
         System.out.println("start pushed");
     }
 
@@ -104,13 +107,25 @@ public class Controller {
         else computerGame();
     }
 
+    private void newGame(){
+        saveGame = new Game(game);
+
+        gameView = new GameView(game);
+        bp2.setCenter(gameView);
+        game();
+
+        saveSettings();
+    }
+
     private void humanGame(){
         if(game.isVictory()){
             System.out.println("Turn: " + game.getTurn());
             System.out.println("Stones: " + game.getStonesNumber());
             WinWindow w = new WinWindow(game);
-            if(w.getDialog().showAndWait().isPresent())
+            if(w.getDialog().showAndWait().isPresent()) {
+                game = new Game(saveGame);
                 menu();
+            }
             return;
         }
         Button button = gameView.getMoveButton();
@@ -129,8 +144,10 @@ public class Controller {
             System.out.println("Turn: " + game.getTurn());
             System.out.println("Stones: " + game.getStonesNumber());
             WinWindow w = new WinWindow(game);
-            if(w.getDialog().showAndWait().isPresent())
+            if(w.getDialog().showAndWait().isPresent()) {
+                game = new Game(saveGame);
                 menu();
+            }
             return;
         }
         Button button = gameView.getMoveButton();
@@ -200,5 +217,46 @@ public class Controller {
         gameScene = new Scene(bp2, 500, 500);
     }
 
-    private void saveSettings(){}
+    private void saveSettings(){
+        try(FileWriter writer = new FileWriter("saves.txt", false))
+        {
+            String text = game.getPlayer1().getName() + " ";
+            text += game.getPlayer2().getName() + " ";
+            text += game.getGame_mode() + " ";
+            text += game.getWin_option() + " ";
+            text += game.getTurn() + " ";
+            text += game.getStonesNumber();
+            writer.write(text);
+
+            writer.flush();
+        }
+        catch(IOException ex){
+
+            System.out.println(ex.getMessage());
+        }
+    }
+
+    private Game loadSettings(){
+        Game tmp = new Game();
+
+        return tmp;
+    }
+
+    private void SaveGame(){
+        try(FileWriter writer = new FileWriter("save_game.txt", false))
+        {
+            // запись всей строки
+            String text = "Hello Gold!";
+            writer.write(text);
+            // запись по символам
+            writer.append('\n');
+            writer.append('E');
+
+            writer.flush();
+        }
+        catch(IOException ex){
+
+            System.out.println(ex.getMessage());
+        }
+    }
 }

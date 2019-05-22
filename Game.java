@@ -23,20 +23,19 @@ public class Game {
         player1 = new Player("Первый игрок");
         player2 = new Player("Второй игрок");
         computer = new Computer("Компьютер");
-//        if(game_mode == COMPHUMAN.COMPUTER){
-//            player1 = new Player("Игрок");
-//            computer = new Computer("Компьютер");
-//
-//        }
-//        else {
-//            player1 = new Player("Первый игрок");
-//            player2 = new Player("Второй игрок");
-//        }
-
         stones_number = 20;
     }
 
-    public Game(COMPHUMAN game_mode, WINOPTION win_option, COMPHUMAN first_turn, String names, int stones_number){
+    public Game (Game game){
+        this.game_mode = game.game_mode;
+        this.turn = game.turn;
+        this.player1 = game.player1;
+        this.player2 = game.player2;
+        this.computer = game.computer;
+        this.stones_number = game.stones_number;
+    }
+
+    /*public Game(COMPHUMAN game_mode, WINOPTION win_option, COMPHUMAN first_turn, String names, int stones_number){
         this.game_mode = game_mode;
         this.win_option = win_option;
         this.turn = first_turn;
@@ -51,7 +50,7 @@ public class Game {
         player1 = new Player(str[0]);
         player2 = new Player(str[1]);
         this.stones_number = stones_number;
-    }
+    }*/
 
     public void recountStones(){
         stones_number -= removed_stones;
